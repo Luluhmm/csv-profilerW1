@@ -1,17 +1,73 @@
 {
-  "rows": 4,
+  "source": {
+    "path": "data/sample.csv"
+  },
+  "summary": {
+    "rows": 4,
+    "columns": 4
+  },
   "columns": {
     "name": {
-      "missing": 0
+      "type": "text",
+      "count": 4,
+      "missing": 0,
+      "unique": 4,
+      "top": [
+        {
+          "value": "Aisha",
+          "count": 1
+        },
+        {
+          "value": "Fahad",
+          "count": 1
+        },
+        {
+          "value": "Noor",
+          "count": 1
+        },
+        {
+          "value": "Salem",
+          "count": 1
+        }
+      ]
     },
     "age": {
-      "missing": 1
+      "type": "number",
+      "count": 3,
+      "missing": 1,
+      "unique": 3,
+      "min": 23.0,
+      "max": 31.0,
+      "mean": 27.666666666666668
     },
     "city": {
-      "missing": 1
+      "type": "text",
+      "count": 3,
+      "missing": 1,
+      "unique": 3,
+      "top": [
+        {
+          "value": "Riyadh",
+          "count": 1
+        },
+        {
+          "value": "Jeddah",
+          "count": 1
+        },
+        {
+          "value": "Dammam",
+          "count": 1
+        }
+      ]
     },
     "salary": {
-      "missing": 1
+      "type": "number",
+      "count": 3,
+      "missing": 1,
+      "unique": 3,
+      "min": 9000.0,
+      "max": 15000.0,
+      "mean": 12000.0
     }
   }
 }

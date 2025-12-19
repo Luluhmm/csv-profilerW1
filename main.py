@@ -4,8 +4,9 @@ from csv_profiler.render import write_json, write_markdown
 
 
 def main() -> None:
-    rows = read_csv_rows("data/sample.csv")
-    report = basic_profile(rows)
+    input_path = "data/sample.csv"
+    rows = read_csv_rows(input_path)
+    report = basic_profile(rows, source_path=input_path)
     write_json(report, "outputs/report.json")
     write_markdown(report, "outputs/report.md")
     print("Wrote outputs/report.json and outputs/report.md")

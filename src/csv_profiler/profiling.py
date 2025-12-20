@@ -75,34 +75,6 @@ def text_stats(values: list[str], top_k: int = 5) -> dict:
 
 #^my helpers
 
-
-
-
-# #task 4 will count the misiings and rows
-# def basic_profile(rows: list[dict[str, str]]) -> dict:
-#     """Compute row count, column names, and missing values per column."""
-#     report = {
-#         "rows": len(rows),#my final report i want to see how many rows i have and clomns with misiings
-#         "columns": {}
-#     }
-
-#     if not rows:#to avoid crashing
-#         return report
-
-#     columns = list(rows[0].keys())# if there is at least one row give me the columns from the first row"keys not values""
-
-#     for col in columns:
-#         report["columns"][col] = {"missing": 0}# initilizing for all column a missing counter
-
-#     for row in rows:#takes the full row
-#         for col in columns:#takes the colmn only which is the key
-#             value = row[col].strip()#the value for that key (col)
-#             if value == "":
-#                 report["columns"][col]["missing"] += 1#col here can be name age salary ...
-
-#     return report
-
-
 def basic_profile(rows: list[dict[str, str]], source_path: str | Path | None = None) -> dict:
     if not rows:
         return {
@@ -133,3 +105,42 @@ def basic_profile(rows: list[dict[str, str]], source_path: str | Path | None = N
         report["columns"][col] = {"type": col_type, **stats}
 
     return report
+
+
+
+def profile_rows(rows: list[dict[str, str]]) -> dict:
+    if not rows:
+        return {"n_rows": 0, "n_cols": 0, "columns": []}
+
+    n_rows = len(rows)
+    columns = list(rows[0].keys())
+
+    col_profiles = []
+
+    for col in columns:
+        values = [r.get(col, "") for r in rows]
+        usable = [v for v in values if not is_missing(v)]
+
+        missing = len(values) - len(usable)
+        inferred = infer_type(values)
+        unique = len(set(usable))
+
+        profile = {
+            "name": col,
+            "type": inferred,
+            "missing": missing,
+            "missing_pct": 100.0 * missing / n_rows if n_rows else 0.0,
+            "unique": unique,
+        }
+
+        if inferred == "number":
+            nums = [try_float(v) for v in usable]
+            nums = [x for x in nums if x is not None]
+            if nums:
+                profile.update(
+                    {"min": min(nums), "max": max(nums), "mean": sum(nums) / len(nums)}
+                )
+
+        col_profiles.append(profile)
+
+    return {"n_rows": n_rows, "n_cols": len(columns), "columns": col_profiles}

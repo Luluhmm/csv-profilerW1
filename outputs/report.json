@@ -1,73 +1,41 @@
 {
-  "source": {
-    "path": "data/sample.csv"
-  },
-  "summary": {
-    "rows": 4,
-    "columns": 4
-  },
-  "columns": {
-    "name": {
+  "n_rows": 5,
+  "n_cols": 4,
+  "columns": [
+    {
+      "name": "name",
       "type": "text",
-      "count": 4,
       "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 5
+    },
+    {
+      "name": "age",
+      "type": "number",
+      "missing": 1,
+      "missing_pct": 20.0,
       "unique": 4,
-      "top": [
-        {
-          "value": "Aisha",
-          "count": 1
-        },
-        {
-          "value": "Fahad",
-          "count": 1
-        },
-        {
-          "value": "Noor",
-          "count": 1
-        },
-        {
-          "value": "Salem",
-          "count": 1
-        }
-      ]
-    },
-    "age": {
-      "type": "number",
-      "count": 3,
-      "missing": 1,
-      "unique": 3,
-      "min": 23.0,
+      "min": 22.0,
       "max": 31.0,
-      "mean": 27.666666666666668
+      "mean": 26.25
     },
-    "city": {
+    {
+      "name": "city",
       "type": "text",
-      "count": 3,
       "missing": 1,
-      "unique": 3,
-      "top": [
-        {
-          "value": "Riyadh",
-          "count": 1
-        },
-        {
-          "value": "Jeddah",
-          "count": 1
-        },
-        {
-          "value": "Dammam",
-          "count": 1
-        }
-      ]
+      "missing_pct": 20.0,
+      "unique": 4
     },
-    "salary": {
+    {
+      "name": "salary",
       "type": "number",
-      "count": 3,
       "missing": 1,
-      "unique": 3,
+      "missing_pct": 20.0,
+      "unique": 4,
       "min": 9000.0,
-      "max": 15000.0,
-      "mean": 12000.0
+      "max": 16000.0,
+      "mean": 13000.0
     }
-  }
+  ],
+  "timing_ms": 1.41
 }

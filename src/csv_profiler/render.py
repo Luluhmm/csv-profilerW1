@@ -2,6 +2,7 @@
 from __future__ import annotations
 import json
 from pathlib import Path
+from datetime import datetime
 
 def write_json(report: dict, path: str | Path) -> None:#takes input (what to write) and where to write it path
     p = Path(path)
@@ -12,31 +13,6 @@ def write_json(report: dict, path: str | Path) -> None:#takes input (what to wri
     #writ my json
     with open(p, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
-        
-        
-# #task6
-# def write_markdown(report: dict, path: str | Path) -> None:
-#     p = Path(path)
-
-#     #create parent folde if it does not exist and if exixst nothing happen
-#     p.parent.mkdir(parents=True, exist_ok=True)
-
-#     rows_count = report.get("rows", 0)
-#     columns_dict = report.get("columns", {})
-#     col_names = list(columns_dict.keys())
-
-#     with open(p, "w", encoding="utf-8") as f:
-#         #my titl
-#         f.write("# CSV Profile Report\n\n")
-#         f.write(f"- Rows: {rows_count}\n")
-#         f.write(f"- Columns: {len(col_names)}\n\n")
-#         f.write("## Missing Values by Column\n\n")
-#         f.write("| Column | Missing |\n")#to do the table
-#         f.write("|--------|---------|\n")
-
-#         for col in col_names:
-#             missing = columns_dict[col].get("missing", 0)
-#             f.write(f"| {col}  |     {missing}      |\n")
 
 
 def md_header(report: dict) -> str:
@@ -94,3 +70,35 @@ def write_markdown(report: dict, path: str | Path) -> None:
 
 
     p.write_text("".join(lines), encoding="utf-8")
+
+
+
+def render_markdown(report: dict) -> str:
+    lines: list[str] = []
+
+    lines.append("# CSV Profiling Report")
+    lines.append(f"Generated: {datetime.now().isoformat(timespec='seconds')}")
+    lines.append("")
+    lines.append("## Summary")
+    lines.append(f"- Rows: **{report['n_rows']}**")
+    lines.append(f"- Columns: **{report['n_cols']}**")
+    lines.append("")
+    lines.append("## Columns")
+    lines.append("| name | type | missing | missing_pct | unique |")
+    lines.append("|---|---:|---:|---:|---:|")
+    #complete here
+    for col in report["columns"]:
+        name = col["name"]
+        ctype = col["type"]
+        missing = col["missing"]
+        missing_pct = col["missing_pct"]
+        unique = col["unique"]
+
+        lines.append(f"| {name} | {ctype} | {missing} | {missing_pct:.1f} | {unique} |")
+
+    lines.append("")
+    lines.append("## Notes")
+    lines.append("- Missing values are: `''`, `na`, `n/a`, `null`, `none`, `nan` (case-insensitive)")
+
+    return "\n".join(lines) + "\n"
+

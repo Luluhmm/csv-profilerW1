@@ -9,6 +9,12 @@ from csv_profiler.render import render_markdown
 
 app = typer.Typer()
 
+@app.command()
+def version():#i just added this to force the multicommands and to force typer see "version , profile as commands" so i can run my program like "this python -m csv_profiler.cli profile data/sample.csv" instead of "python -m csv_profiler.cli data/sample.csv" the soecond one has no profile command.
+
+    pass
+
+
 @app.command(help="Profile a CSV file and write JSON + Markdown")
 def profile(
     input_path: Path = typer.Argument(..., help="Input CSV file"),

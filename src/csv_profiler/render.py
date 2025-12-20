@@ -73,32 +73,62 @@ def write_markdown(report: dict, path: str | Path) -> None:
 
 
 
+
 def render_markdown(report: dict) -> str:
     lines: list[str] = []
-
     lines.append("# CSV Profiling Report")
     lines.append(f"Generated: {datetime.now().isoformat(timespec='seconds')}")
     lines.append("")
+    # Summ
     lines.append("## Summary")
     lines.append(f"- Rows: **{report['n_rows']}**")
     lines.append(f"- Columns: **{report['n_cols']}**")
     lines.append("")
-    lines.append("## Columns")
-    lines.append("| name | type | missing | missing_pct | unique |")
-    lines.append("|---|---:|---:|---:|---:|")
-    #complete here
+    lines.append("## Columns Overview")
+    lines.append("")
+    lines.append("| Column | Type | Missing % | Unique |")
+    lines.append("|--------|------|-----------:|-------:|")
+
     for col in report["columns"]:
         name = col["name"]
-        ctype = col["type"]
-        missing = col["missing"]
+        col_type = col["type"]
         missing_pct = col["missing_pct"]
         unique = col["unique"]
 
-        lines.append(f"| {name} | {ctype} | {missing} | {missing_pct:.1f} | {unique} |")
+        lines.append(f"| {name} | {col_type} | {missing_pct:.1f}% | {unique} |")
 
     lines.append("")
+    lines.append("## Column Details")
+    lines.append("")
+
+    for col in report["columns"]:
+        name = col["name"]
+        col_type = col["type"]
+
+        lines.append(f"### {name}")
+        lines.append("")
+        lines.append(f"- Type: **{col_type}**")
+        lines.append(f"- Missing: {col['missing']}")
+        lines.append(f"- Unique: {col['unique']}")
+
+        if col_type == "number":
+            lines.append(f"- Min: {col.get('min')}")
+            lines.append(f"- Max: {col.get('max')}")
+            lines.append(f"- Mean: {col.get('mean')}")
+        else:
+            lines.append("")
+            lines.append("Top values:")
+            top = col.get("top", [])
+            if not top:
+                lines.append("- (none)")
+            else:
+                for item in top:
+                    lines.append(f"- {item['value']}: {item['count']}")
+
+        lines.append("")
     lines.append("## Notes")
     lines.append("- Missing values are: `''`, `na`, `n/a`, `null`, `none`, `nan` (case-insensitive)")
+    lines.append("")
 
-    return "\n".join(lines) + "\n"
+    return "\n".join(lines)
 

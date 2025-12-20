@@ -1,5 +1,6 @@
 from __future__ import annotations
 from pathlib import Path
+from collections import Counter
 
 MISSING ={"", "na", "n/a", "null", "none", "nan"}
 
@@ -137,9 +138,19 @@ def profile_rows(rows: list[dict[str, str]]) -> dict:
             nums = [try_float(v) for v in usable]
             nums = [x for x in nums if x is not None]
             if nums:
-                profile.update(
-                    {"min": min(nums), "max": max(nums), "mean": sum(nums) / len(nums)}
-                )
+                profile.update({
+                    "min": min(nums),
+                    "max": max(nums),
+                    "mean": sum(nums) / len(nums)
+                })
+        else:
+            counts = Counter(usable)
+            top = [
+                {"value": v, "count": c}
+                for v, c in counts.most_common(5)
+            ]
+            profile["top"] = top
+
 
         col_profiles.append(profile)
 
